@@ -1,0 +1,44 @@
+create sequence book_seq
+start with 1
+increment by 1;
+
+
+create table bookings(
+id number(3) primary key,
+name varchar2(30) not null,
+room_no number(3) not null,
+check_in_date date not null,
+check_out_date date not null,
+discount number(3) not null check(discount>50),
+price_forday1 number(5) not null,
+country varchar2(25) not null,
+created_at date default sysdate
+);
+
+
+insert into bookings(id, name, room_no, check_in_date, check_out_date, discount, price_forday1, country) values(book_seq.nextval, 'Vaibhav', 101, '21-May-2023', '28-May-2023', 500, 1000, 'India');
+
+insert into bookings(id, name, room_no, check_in_date, check_out_date, discount, price_forday1, country) values(book_seq.nextval, 'Ajay', 102, '11-June-2023', '28-June-2023', 400, 900, 'India');
+
+insert into bookings(id, name, room_no, check_in_date, check_out_date, discount, price_forday1, country) values(book_seq.nextval, 'Ketan', 103, '11-Sep-2023', '13-Sep-2023', 450, 1200, 'US');
+
+insert into bookings(id, name, room_no, check_in_date, check_out_date, discount, price_forday1, country) values(book_seq.nextval, 'Gopal', 104, '12-Dec-2023', '17-Dec-2023', 220, 1100, 'UK');
+
+insert into bookings(id, name, room_no, check_in_date, check_out_date, discount, price_forday1, country) values(book_seq.nextval, 'Shivam', 105, '15-Jan-2023', '19-Jan-2023', 220, 1100, 'UK');
+
+insert into bookings(id, name, room_no, check_in_date, check_out_date, discount, price_forday1, country) values(book_seq.nextval, 'Viraj', 106, '12-Feb-2023', '19-Feb-2023', 330, 1400, 'Nepal');
+
+insert into bookings(id, name, room_no, check_in_date, check_out_date, discount, price_forday1, country) values(book_seq.nextval, 'Sagar', 107, '12-Mar-2023', '15-Mar-2023', 130, 900, 'Nepal');
+
+
+select count(*), country from bookings group by country;
+
+select count(*), country from bookings group by country order by count(*) desc offset 0 rows fetch next 1 rows only;
+
+select * from bookings where extract(month from check_in_date)=6;
+
+select * from bookings where check_out_date-check_in_date>4;
+
+select (check_out_date-check_in_date)*price_forday1 - ((check_out_date-check_in_date)*price_forday1)*10/100 from bookings;
+
+
