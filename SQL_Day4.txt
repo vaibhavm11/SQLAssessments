@@ -1,0 +1,124 @@
+declare 
+num1 number(2) := &num1;
+num2 number(2) := &num2;
+name varchar2(30) := '&name';
+result number(3);
+begin
+dbms_output.put_line('Name of mathematical operations performer :' || name);
+result := num1 + num2;
+dbms_output.put_line('sum is :' || result);
+result := num1 - num2;
+dbms_output.put_line('Difference is :' || result);
+result := num1 * num2;
+dbms_output.put_line('Product is :' || result);
+result := num1 / num2;
+dbms_output.put_line('Quotient is :' || result);
+end;
+/
+
+-------------------------------------------------------------------------------------
+
+declare 
+num1 number(2) := &num1;
+num2 number(2) := &num2;
+name varchar2(30) := '&name';
+result number(3);
+begin
+result := REMAINDER(num1, num2);
+dbms_output.put_line('Remainder is :' || result);
+end;
+/
+-------------------------------------------------------------------------
+declare 
+vname employees.name%type;
+vcity employees.city%type;
+vemail employees.email%type;
+vsal employees.salary%type;
+begin
+select name, city, email, salary into vname, vcity, vemail, vsal from employees where id = 1;
+dbms_output.put_line('The name is ' || vname);
+dbms_output.put_line('The city is ' || vcity);
+dbms_output.put_line('The email is ' || vemail);
+dbms_output.put_line('The annual salary is ' || vsal*12);
+end;
+/
+------------------------------------------------------
+declare 
+salary number(10) := &salary;
+begin
+if(salary>=100000) then
+dbms_output.put_line('You have pay an amount of ' || ((salary*25)/100) || 'as a tax amount');
+elsif(salary<100000 and salary>=60000) then
+dbms_output.put_line('You have pay an amount of ' || ((salary*15)/100) || 'as a tax amount');
+elsif(salary<60000 and salary>=40000) then
+dbms_output.put_line('You have pay an amount of ' || ((salary*8)/100) || 'as a tax amount');
+else
+dbms_output.put_line('You have no need to pay an amount of tax ');
+end if;
+end;
+/
+---------------------------------------------------------------------------------------------------
+declare 
+tableno number(2) := &tableno;
+i number(2) := 1;
+begin
+      loop
+           dbms_output.put_line(i || '*' || tableno || ' = ' || tableno*i);
+           i := i+1;
+           if(i>10) then
+                  exit;
+           end if;
+      end loop;
+      dbms_output.put_line('After the loop');
+end;
+/
+---------------------------------------------------------------------------------------
+declare 
+i number(2) := 1;
+begin
+      loop
+           dbms_output.put_line('hello' || i);
+           i := i+1;
+           if(i>10) then
+                  exit;
+           end if;
+      end loop;
+      dbms_output.put_line('After the loop');
+end;
+/
+--------------------------------------------------------------------------------------------------
+ 
+declare
+type numFiveEles is varray(5) of number(3);
+adding numFiveEles;
+add number(5) :=0;
+begin
+adding := numFiveEles(1,2,3,4,5);
+for i in 1..adding.count loop
+add := add +adding(i);
+end loop;
+dbms_output.put_line(add);
+end;
+/
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
