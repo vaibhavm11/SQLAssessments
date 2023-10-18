@@ -1,0 +1,235 @@
+create table departments(
+id number(10) primary key,
+name varchar2(30) not null unique,
+created_at date default sysdate
+);
+
+create sequence dept_seq
+start with 1
+increment by 1;
+
+insert into departments(id, name) values(dept_seq.nextval, 'Sales');
+
+insert into departments(id, name) values(dept_seq.nextval, 'IT');
+
+insert into departments(id, name) values(dept_seq.nextval, 'Marketing');
+
+insert into departments(id, name) values(dept_seq.nextval, 'HR');
+
+insert into departments(id, name) values(dept_seq.nextval, 'Finance');
+
+
+create table employees(
+id number(10) primary key,
+name varchar2(30) not null,
+city varchar2(30) not null,
+email varchar2(30) not null unique,
+salary  number(10) not null,
+did number(10),
+foreign key(did) references departments(id),
+created_at date default sysdate
+);
+
+create sequence emp_seq
+start with 1
+increment by 1;
+
+insert into employees(id, name, city, email, salary, did) values(emp_seq.nextval, 'Vaibhav', 'Pune', 'vaibhav@gmail.com', 35000,2);
+
+insert into employees(id, name, city, email, salary, did) values(emp_seq.nextval, 'Ketan', 'Kolhapur', 'ketan@gmail.com', 40000,1);
+
+insert into employees(id, name, city, email, salary, did) values(emp_seq.nextval, 'Ram', 'Mumbai', 'Ram@gmail.com', 50000,3);
+
+insert into employees(id, name, city, email, salary, did) values(emp_seq.nextval, 'Shree', 'Satara', 'shree@gmail.com', 35000,4);
+
+insert into employees(id, name, city, email, salary, did) values(emp_seq.nextval, 'Rani', 'Pune', 'rani@gmail.com', 32000, null);
+
+select d.id, d.name, e.id, e.name from
+departments d inner join employees e
+on d.id = e.did;
+
+select d.id, d.name, e.id, e.name from
+departments d left outer join employees e
+on d.id = e.did
+
+select d.id, d.name, e.id, e.name from
+departments d right outer join employees e
+on d.id = e.did;
+
+select d.id, d.name, e.id, e.name from
+departments d full join employees e
+on d.id = e.did;
+
+select d.id, d.name, e.id, e.name from
+departments d, employees e
+where d.id = e.did;
+
+select d.id, d.name, e.id, e.name from
+departments d cross join employees e;
+
+create sequence bd_seq
+start with 1
+increment by 1;
+
+create table Bank_details(
+id number(10) primary key,
+accountno number(10) not null unique,
+ifsccode number(8) not null,
+branch varchar2(30) not null,
+eid number(10),
+foreign key(eid) references employees(id),
+created_at date default sysdate
+);
+
+ insert into Bank_details(id, accountno, ifsccode, branch, eid) values(bd_seq.nextval, 123456, 654, 'Pune', 1);
+
+insert into Bank_details(id, accountno, ifsccode, branch, eid) values(bd_seq.nextval, 1234578, 654, 'Mumbai', 2);
+
+insert into Bank_details(id, accountno, ifsccode, branch, eid) values(bd_seq.nextval, 1004578, 654, 'Kolhapur', 3);
+
+insert into Bank_details(id, accountno, ifsccode, branch, eid) values(bd_seq.nextval, 1004568, 654, 'Satara', 4);
+
+insert into Bank_details(id, accountno, ifsccode, branch, eid) values(bd_seq.nextval, 1001168, 454, 'Pune', 5);
+
+select d.name, e.name, e.salary, bd.accountno, bd.branch from
+departments d, employees e, Bank_details bd
+where d.id = e.did and e.id = bd.eid;
+
+select d.name, e.name, e.salary, bd.accountno, bd.branch from
+departments d, employees e, Bank_details bd
+where d.id = e.did and e.id = bd.eid and d.name = 'Sales';
+
+select d.name, e.name, e.salary, bd.accountno, bd.branch from
+departments d, employees e, Bank_details bd
+where d.id = e.did and e.id = bd.eid
+order by e.salary desc;
+
+select d.name, e.name, e.salary, bd.accountno, bd.branch from
+departments d, employees e, Bank_details bd
+where d.id = e.did and e.id = bd.eid
+order by e.salary desc fetch next 2 rows only;
+
+create table users(
+id number(5) primary key,
+name varchar2(30) not null,
+username varchar(40) not null unique,
+password varchar2(30) not null unique,
+bio varchar2(50) not null,
+link varchar2(20) not null,
+type varchar2(20) not null,
+created_at date default sysdate
+);
+
+create sequence users_seq
+start with 1
+increment by1;
+
+insert into users(id, name, username, password, bio, link, type) values (users_seq.nextval, 'Vaibhav', 'vaibhavmane', 'vaibhav#7', 'fjwdycfudjch', 'sdfhrth', 'Private');
+
+insert into users(id, name, username, password, bio, link, type) values (users_seq.nextval, 'Raj', 'rajrane', 'raj#7', 'fjwdycdvjgjdjch', 'sdfjhrth', 'Public');
+
+insert into users(id, name, username, password, bio, link, type) values (users_seq.nextval, 'Rani', 'ranisharma', 'rani234', 'Stdent', 'www.comth', 'Public');
+
+insert into users(id, name, username, password, bio, link, type) values (users_seq.nextval, 'sham', 'shamaarya', 'arya23@4', 'Teacher', 'https://vhgvdhcg', 'Private');
+
+insert into users(id, name, username, password, bio, link, type) values (users_seq.nextval, 'soham', 'sohamdd', 'soham3@4', 'Artist', 'https://vhgvjygudhcg', 'Public');
+
+create table posts(
+id number(10) primary key,
+caption varchar2(50) not null,
+medea varchar2(20) not null,
+type varchar2(30) not null,
+user_id number(5),
+foreign key(user_id) references users(id),
+created_at date default sysdate
+);
+
+create sequence posts_seq
+start with 1
+increment by 1;
+
+insert into posts(id, caption, medea, type, user_id) values (posts_seq.nextval, 'Birthdaypost', 'image', 'photo', 1);
+
+insert into posts(id, caption, medea, type, user_id) values (posts_seq.nextval, 'farewell', 'video', 'reel', 2);
+
+insert into posts(id, caption, medea, type, user_id) values (posts_seq.nextval, 'Picnic', 'video', 'reel', 3);
+
+insert into posts(id, caption, medea, type, user_id) values (posts_seq.nextval, 'FirstdayOffice', 'image', 'photo', 4);
+
+insert into posts(id, caption, medea, type, user_id) values (posts_seq.nextval, 'Lunch', 'image', 'photo', 5);
+
+insert into posts(id, caption, medea, type, user_id) values (posts_seq.nextval, 'Dinner', 'image', 'photo', 2);
+
+insert into posts(id, caption, medea, type, user_id) values (posts_seq.nextval, 'Diwali', 'video', 'reel', 3);
+
+
+create table comments(
+id number(10) primary key,
+users_id number(5),
+foreign key(users_id) references users(id),
+post_id number(10),
+foreign key(post_id) references posts(id),
+message varchar2(30) not null,
+created_at date default sysdate
+);
+
+create sequence comm_seq
+start with 1
+increment by 1;
+
+insert into comments(id, users_id, post_id, message) values(comm_seq.nextval, 2, 1, 'Happy Birthday');
+
+insert into comments(id, users_id, post_id, message) values(comm_seq.nextval, 2, 7, 'Happy Diwali');
+
+insert into comments(id, users_id, post_id, message) values(comm_seq.nextval, 4, 1, 'Happy Birthday');
+
+insert into comments(id, users_id, post_id, message) values(comm_seq.nextval, 3, 3, 'Happy Picnic');
+
+insert into comments(id, users_id, post_id, message) values(comm_seq.nextval, 3, 1, 'Happy Birthday');
+
+select u.name, c.message from
+users u, comments c
+where u.id = c.users_id and u.name ='Rani';
+
+
+select u.name, c.message, p.caption from
+users u, posts p, comments c
+where u.id = p.user_id and p.id = c.users_id and u.name='Rani';
+
+
+select * from 
+users u, posts p, comments c
+where u.id = c.users_id 
+and p.user_id = c.post_id
+and u.name='Raj';
+
+select count(*) from
+users u, posts p
+where u.id = p.user_id
+and p.created_at = '16-oct-2023';
+
+Homework assignment:
+---------------------------------
+
+select u.name, c.message from
+users u, comments c
+where u.id = c.users_id and u.name='Rani';
+
+select u.name from
+users u, posts p, comments c
+where u.id = c.users_id and p.id = c.post_id and trunc(p.created_at)=('16-oct-2023');
+
+select name from users where trunc(created_at) = '16-oct-2023';
+
+select p.caption, u.name from
+users u, posts p
+where u.id = p.user_id and u.name='Vaibhav';
+
+
+select u.id, u.name, p.id, c.message from 
+users u, posts p, comments c
+where u.id = p.user_id and p.id = c.post_id and u.id = c.users_id;
+
+
+
+
