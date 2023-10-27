@@ -1,0 +1,143 @@
+declare 
+cursor c_users is select id, username, link, password from users;
+v_id users.id%type;
+v_username users.username%type;
+v_link users.link%type;
+v_password users.password%type;
+begin
+open c_users;
+loop
+fetch c_users into v_id, v_username, v_link, v_password;
+exit when c_users%notfound = true;
+dbms_output.put_line(v_username  || ' ' || v_password);
+end loop;
+close c_users;
+end;
+/
+-------------------------------------------------------------
+declare
+cursor c_users is select * from users;
+ur users%rowtype;
+begin
+open c_users;
+loop
+fetch c_users into ur;
+exit when c_users%notfound;
+dbms_output.put_line(ur.id  || ' ' || ur.username);
+end loop;
+close c_users;
+end;
+/
+---------------------------------------------------------------
+create or replace procedure sq_cube(n1 in number, n2 in number)
+as 
+begin
+dbms_output.put_line('square of n1' || n1*n1 || 'Cube of n2' || n2*n2*n2);
+end;
+/
+
+-----------------------------------------------------------------------------------
+create or replace procedure getemp(eid in number, ename out employees.name%type, esalary out employees.salary%type)
+as
+begin
+select name, salary into ename, esalary from employees where id =eid;
+end;
+/
+
+declare 
+eid employees.id%type := &eid;
+ename employees.name%type;
+esalary employees.salary%type;
+begin
+getemp(eid, ename, esalary);
+dbms_output.put_line(eid || '  ' || ename || '  ' ||esalary);
+end;
+/
+
+---------------------------------------------------------------------------------------
+create or replace function getdata(ename in varchar2) return employees.email%type
+is
+eemail employees.email%type;
+begin
+select email into eemail from employees where name = ename;
+return eemail;
+end;
+/
+
+declare
+nm varchar2(30);
+begin
+nm := getdata('Vaibhav');
+dbms_output.put_line(nm);
+end;
+/
+-----------------------------------------------------------------------------------------
+
+create or replace function getsal(ename in varchar2) return employees.salary%type
+is
+esalary employees.salary%type;
+begin
+select salary into esalary from employees where name = ename;
+return ((esalary*10)/100);
+end;
+/
+
+
+declare
+nm varchar2(30);
+begin
+nm := getsal('Vaibhav');
+dbms_output.put_line(nm);
+end;
+/
+
+
+create or replace trigger displayUpdateMessage
+after update on employees
+for each row
+begin
+dbms_output.put_line(:OLD.salary || '  ' ||:OLD.name);
+dbms_output.put_line(:NEW.salary || '  ' ||:NEW.name);
+dbms_output.put_line('The difference between old salary and new salary is   ' || (:NEW.salary - :OLD.salary));
+end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
